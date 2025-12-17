@@ -40,6 +40,21 @@
   padding: 12px;
   font-size: 12px;
   line-height: 1.6;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.intro-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.intro-content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.intro-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
 }
 
 .intro-section {
