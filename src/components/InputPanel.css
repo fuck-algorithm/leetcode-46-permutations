@@ -86,6 +86,16 @@
   cursor: not-allowed;
 }
 
+.preset-btn.random-btn {
+  font-size: 14px;
+  padding: 4px 10px;
+}
+
+.preset-btn.random-btn:hover:not(:disabled) {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
 .error-message {
   color: #f44336;
   font-size: 11px;

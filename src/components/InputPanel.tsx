@@ -14,6 +14,19 @@ const PRESETS = [
   { label: '[1,2,3,4]', value: '1,2,3,4' },
 ];
 
+// 生成随机数组
+function generateRandomArray(): string {
+  const length = Math.floor(Math.random() * 4) + 2; // 2-5个数字
+  const nums: number[] = [];
+  const available = [1, 2, 3, 4, 5, 6];
+  for (let i = 0; i < length; i++) {
+    const idx = Math.floor(Math.random() * available.length);
+    nums.push(available[idx]);
+    available.splice(idx, 1);
+  }
+  return nums.join(',');
+}
+
 export function InputPanel({ onSubmit, disabled }: InputPanelProps) {
   const [input, setInput] = useState('1,2,3');
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +47,16 @@ export function InputPanel({ onSubmit, disabled }: InputPanelProps) {
     setInput(value);
     setError(null);
     const result = validateInput(value);
+    if (result.isValid && result.parsedNumbers) {
+      onSubmit(result.parsedNumbers);
+    }
+  };
+
+  const handleRandomClick = () => {
+    const randomValue = generateRandomArray();
+    setInput(randomValue);
+    setError(null);
+    const result = validateInput(randomValue);
     if (result.isValid && result.parsedNumbers) {
       onSubmit(result.parsedNumbers);
     }
@@ -65,6 +88,15 @@ export function InputPanel({ onSubmit, disabled }: InputPanelProps) {
               {preset.label}
             </button>
           ))}
+          <button
+            type="button"
+            className="preset-btn random-btn"
+            onClick={handleRandomClick}
+            disabled={disabled}
+            title="生成随机数组"
+          >
+            🎲
+          </button>
         </div>
       </form>
       {error && <div className="error-message">{error}</div>}

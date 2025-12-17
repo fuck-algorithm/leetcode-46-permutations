@@ -211,6 +211,7 @@ function App() {
           <InputPanel onSubmit={handleSubmit} disabled={isPlaying} />
         </div>
         <div className="header-right">
+          <AlgorithmIntro inputNumbers={inputNumbers} />
           {steps.length > 0 && !tutorialState.isActive && (
             <button className="tutorial-button" onClick={startTutorial}>
               🎓 教程
@@ -293,7 +294,6 @@ function App() {
 
           {/* 右侧：辅助信息 */}
           <aside className="right-panel">
-            <AlgorithmIntro inputNumbers={inputNumbers} />
             <EnhancedStepExplanation
               stepType={currentStepType}
               currentPath={currentPath}
