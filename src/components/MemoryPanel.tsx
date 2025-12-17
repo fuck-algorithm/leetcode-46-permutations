@@ -11,14 +11,6 @@ interface MemoryPanelProps {
   previousAvailable?: number[];
 }
 
-// 调用栈帧接口
-interface StackFrame {
-  depth: number;
-  path: number[];
-  currentChoice: number | null;
-  availableChoices: number[];
-}
-
 interface VariableState {
   name: string;
   value: string;

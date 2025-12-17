@@ -23,17 +23,6 @@ interface TutorialPrompt {
   showPrediction?: boolean;
 }
 
-// 教程步骤顺序
-const TUTORIAL_STEP_ORDER: TutorialStep[] = [
-  'intro',
-  'first-select',
-  'continue-select', 
-  'first-complete',
-  'first-backtrack',
-  'explore-branch',
-  'summary',
-];
-
 const TUTORIAL_PROMPTS: Record<TutorialStep, TutorialPrompt> = {
   'intro': {
     title: '🎓 欢迎来到回溯算法教程',
