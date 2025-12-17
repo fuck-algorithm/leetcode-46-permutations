@@ -1,0 +1,167 @@
+# Implementation Plan
+
+- [ ] 1. Create enhancement utility functions and types
+  - [x] 1.1 Add new type definitions
+    - Add `PseudocodeLine`, `CodeHighlightMapping`, `NodeAnnotationType` types to `src/types/index.ts`
+    - Add `AnimatedArrow`, `StepContext`, `ProgressInfo`, `MiniMapNode` types
+    - Add `TutorialStep`, `TutorialState`, `LegendItem` types
+    - _Requirements: 1.1, 1.3, 2.1, 3.1, 5.1_
+  - [x] 1.2 Create annotation engine utilities
+    - Create `src/engine/annotations.ts` with helper functions
+    - Implement `getCodeHighlightLines(stepType): number[]`
+    - Implement `generateArrow(step, positions): AnimatedArrow`
+    - Implement `generateStepExplanation(context): StepExplanation`
+    - _Requirements: 1.3, 2.2, 2.3, 3.2, 3.3, 3.4_
+  - [x] 1.3 Write property test for code highlight mapping
+    - **Property 1: Code Highlight Mapping Correctness**
+    - **Validates: Requirements 1.3**
+  - [x] 1.4 Write property test for arrow generation
+    - **Property 2: Arrow Generation Correctness**
+    - **Validates: Requirements 2.2, 2.3**
+  - [x] 1.5 Write property test for step explanation completeness
+    - **Property 4: Step Explanation Completeness**
+    - **Validates: Requirements 3.2, 3.3, 3.4**
+
+- [ ] 2. Create progress calculation utilities
+  - [x] 2.1 Implement progress calculator
+    - Create `src/engine/progress.ts`
+    - Implement `calculateProgress(state): ProgressInfo`
+    - Implement `generateMiniMap(tree, currentNodeId, visitedNodes): MiniMapNode[]`
+    - Implement `getHighlightPath(tree, nodeId): string[]`
+    - _Requirements: 4.2, 5.1, 5.2, 5.4_
+  - [x] 2.2 Write property test for progress calculation
+    - **Property 6: Progress Calculation Correctness**
+    - **Validates: Requirements 5.1, 5.2**
+  - [x] 2.3 Write property test for path highlighting
+    - **Property 5: Path Highlighting Correctness**
+    - **Validates: Requirements 4.2**
+  - [x] 2.4 Write property test for mini-map position
+    - **Property 7: Mini-map Position Correctness**
+    - **Validates: Requirements 5.4**
+
+- [x] 3. Checkpoint - Ensure all utility tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 4. Create Algorithm Concept Panel component
+  - [x] 4.1 Implement AlgorithmConceptPanel component
+    - Create `src/components/AlgorithmConceptPanel.tsx`
+    - Display pseudocode with syntax highlighting
+    - Highlight current executing lines based on step type
+    - Add tooltips for each pseudocode line
+    - Make panel collapsible
+    - _Requirements: 1.1, 1.2, 1.3, 1.4_
+  - [x] 4.2 Add AlgorithmConceptPanel styles
+    - Create `src/components/AlgorithmConceptPanel.css`
+    - Style pseudocode with monospace font and indentation
+    - Add highlight animation for active lines
+    - Style tooltips and collapse button
+    - _Requirements: 1.2, 1.3_
+
+- [ ] 5. Enhance Step Explanation component
+  - [x] 5.1 Create EnhancedStepExplanation component
+    - Create `src/components/EnhancedStepExplanation.tsx`
+    - Display detailed explanation with reason and next action
+    - Show alternatives for select steps
+    - Add paused state context
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
+  - [x] 5.2 Add EnhancedStepExplanation styles
+    - Create `src/components/EnhancedStepExplanation.css`
+    - Style explanation sections with clear visual hierarchy
+    - Add animations for step transitions
+    - _Requirements: 3.1_
+
+- [ ] 6. Create Progress Tracker component
+  - [x] 6.1 Implement ProgressTracker component
+    - Create `src/components/ProgressTracker.tsx`
+    - Display progress percentage bar
+    - Show found permutations count
+    - Render mini-map with current position
+    - Display completion summary
+    - _Requirements: 5.1, 5.2, 5.3, 5.4_
+  - [x] 6.2 Add ProgressTracker styles
+    - Create `src/components/ProgressTracker.css`
+    - Style progress bar with animation
+    - Style mini-map with proper scaling
+    - _Requirements: 5.1, 5.4_
+
+- [ ] 7. Create Legend Panel component
+  - [x] 7.1 Implement LegendPanel component
+    - Create `src/components/LegendPanel.tsx`
+    - Display all node color meanings
+    - Display arrow type explanations
+    - Make panel collapsible
+    - Add hover interaction to highlight elements
+    - _Requirements: 7.1, 7.2, 7.3, 7.4_
+  - [x] 7.2 Write property test for legend completeness
+    - **Property 8: Legend Completeness for Node States**
+    - **Validates: Requirements 7.1**
+  - [x] 7.3 Add LegendPanel styles
+    - Create `src/components/LegendPanel.css`
+    - Style legend items with color swatches
+    - Style collapse animation
+    - _Requirements: 7.1_
+
+- [ ] 8. Enhance Tree Visualization
+  - [x] 8.1 Add node annotations to TreeVisualization
+    - Update `src/components/TreeVisualization.tsx`
+    - Add pulsing animation for visiting nodes
+    - Display "正在访问", "选择", "撤销", "找到排列!" labels
+    - Add celebration effect for complete nodes
+    - _Requirements: 2.1, 2.4_
+  - [x] 8.2 Add animated arrows to TreeVisualization
+    - Implement arrow animation from available to path (select)
+    - Implement arrow animation from path to available (backtrack)
+    - Add arrow labels
+    - _Requirements: 2.2, 2.3_
+  - [x] 8.3 Implement branch dimming
+    - Dim unexplored branches when exploring
+    - Highlight current path with distinct color
+    - _Requirements: 2.5, 4.2_
+  - [x] 8.4 Write property test for unexplored branch dimming
+    - **Property 3: Unexplored Branch Dimming**
+    - **Validates: Requirements 2.5**
+  - [x] 8.5 Add node tooltips
+    - Show path from root to node on hover
+    - Connect leaf nodes to results panel
+    - _Requirements: 4.3, 4.4_
+  - [x] 8.6 Update TreeVisualization styles
+    - Update `src/components/TreeVisualization.css`
+    - Add pulsing animation keyframes
+    - Add arrow animation styles
+    - Add dimming styles
+    - _Requirements: 2.1, 2.2, 2.3, 2.5_
+
+- [ ] 9. Create Tutorial Mode
+  - [x] 9.1 Implement TutorialController hook
+    - Create `src/hooks/useTutorialController.ts`
+    - Manage tutorial state and progression
+    - Define key decision points
+    - Handle user predictions
+    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+  - [x] 9.2 Implement TutorialOverlay component
+    - Create `src/components/TutorialOverlay.tsx`
+    - Display educational prompts at decision points
+    - Show prediction input and feedback
+    - Display completion summary
+    - _Requirements: 6.2, 6.3, 6.4_
+  - [x] 9.3 Add TutorialOverlay styles
+    - Create `src/components/TutorialOverlay.css`
+    - Style overlay with semi-transparent background
+    - Style prompt cards and buttons
+    - _Requirements: 6.2_
+
+- [ ] 10. Integrate all enhanced components
+  - [x] 10.1 Update App component
+    - Update `src/App.tsx` to include all new components
+    - Add state management for new features
+    - Wire up tutorial mode toggle
+    - Add legend panel toggle
+    - _Requirements: 1.1, 5.1, 6.1, 7.1_
+  - [x] 10.2 Update App styles
+    - Update `src/App.css` for new layout
+    - Ensure responsive design for all new components
+    - _Requirements: 6.1_
+
+- [x] 11. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+

@@ -1,0 +1,104 @@
+# Implementation Plan
+
+- [x] 1. Set up project structure and dependencies
+  - Initialize React + TypeScript project with Vite
+  - Install dependencies: D3.js, fast-check, vitest
+  - Configure TypeScript and testing environment
+  - Create directory structure: `src/components`, `src/engine`, `src/hooks`, `src/types`
+  - _Requirements: 6.1_
+
+- [x] 2. Implement core algorithm engine
+  - [x] 2.1 Create type definitions
+    - Define `AnimationStep`, `TreeNode`, `StepType` interfaces in `src/types/index.ts`
+    - Define `ValidationResult`, `AppState`, `NodeVisualState` types
+    - _Requirements: 2.1, 3.1, 3.2_
+  - [x] 2.2 Implement input validation function
+    - Create `validateInput(input: string): ValidationResult` in `src/engine/validation.ts`
+    - Handle empty input, duplicates, size > 6, invalid format, out of range
+    - _Requirements: 1.1, 1.2_
+  - [x] 2.3 Write property test for input validation
+    - **Property 1: Valid Input Acceptance**
+    - **Property 2: Invalid Input Rejection**
+    - **Validates: Requirements 1.1, 1.2**
+  - [x] 2.4 Implement permutation engine
+    - Create `PermutationEngine` class in `src/engine/permutation.ts`
+    - Implement `generateSteps(nums: number[]): AnimationStep[]` using backtracking
+    - Implement `buildTree(nums: number[]): TreeNode`
+    - _Requirements: 2.1, 3.1, 3.2, 3.3, 3.4, 5.1_
+  - [x] 2.5 Write property tests for permutation engine
+    - **Property 3: Permutation Completeness**
+    - **Property 4: Tree Structure Correctness**
+    - **Property 5: Algorithm State Consistency**
+    - **Property 6: Step Transition Correctness**
+    - **Validates: Requirements 2.1, 3.1, 3.2, 3.3, 3.4, 5.1, 5.2**
+
+- [x] 3. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 4. Implement animation controller
+  - [x] 4.1 Create animation controller hook
+    - Implement `useAnimationController` custom hook in `src/hooks/useAnimationController.ts`
+    - Handle play, pause, stepForward, reset, setSpeed functions
+    - Manage animation state and timing with `setInterval`
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [x] 4.2 Write property tests for animation controller
+    - **Property 8: Step Forward Determinism**
+    - **Property 9: Reset State Restoration**
+    - **Validates: Requirements 4.3, 4.4**
+
+- [x] 5. Implement React components
+  - [x] 5.1 Create InputPanel component
+    - Text input for numbers (comma-separated)
+    - Submit button with validation feedback
+    - Error message display
+    - _Requirements: 1.1, 1.2, 1.3_
+  - [x] 5.2 Create ControlPanel component
+    - Play/Pause button
+    - Step forward button
+    - Reset button
+    - Speed slider (100ms - 2000ms)
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [x] 5.3 Create StateDisplay component
+    - Display current path array with visual boxes
+    - Display available numbers array
+    - Animate transitions between states
+    - _Requirements: 3.1, 3.2, 3.3, 3.4_
+  - [x] 5.4 Create ResultsPanel component
+    - List of generated permutations
+    - Total count display
+    - Hover interaction for path highlighting
+    - _Requirements: 5.1, 5.2, 5.3_
+
+- [x] 6. Implement D3.js tree visualization
+  - [x] 6.1 Create TreeVisualization component
+    - Set up D3.js SVG container with React ref
+    - Implement tree layout using `d3.tree()`
+    - Render nodes and links with proper positioning
+    - _Requirements: 2.1_
+  - [x] 6.2 Implement node visual states
+    - Apply colors based on node state (unvisited, visiting, visited, backtracked, complete)
+    - Add CSS transitions for smooth state changes
+    - Implement current node highlighting
+    - _Requirements: 2.2, 2.3, 2.4, 6.2, 6.3_
+  - [x] 6.3 Write property test for node visual states
+    - **Property 7: Node Visual State Consistency**
+    - **Validates: Requirements 2.2, 2.3, 2.4, 6.3**
+  - [x] 6.4 Implement path highlighting on hover
+    - Highlight tree path when hovering over result
+    - Clear highlight on mouse leave
+    - _Requirements: 5.3_
+
+- [x] 7. Integrate all components
+  - [x] 7.1 Create main App component
+    - Set up application state with `useState` and `useReducer`
+    - Wire up all child components with proper props
+    - Handle state updates from animation controller
+    - _Requirements: 1.3_
+  - [x] 7.2 Add responsive styling
+    - Create CSS styles for layout (flexbox/grid)
+    - Ensure proper rendering on 768px - 1920px screens
+    - Add smooth transitions (200ms - 500ms)
+    - _Requirements: 6.1, 6.2, 6.3_
+
+- [x] 8. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

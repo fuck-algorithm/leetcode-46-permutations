@@ -1,0 +1,243 @@
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: overlay-fade-in 0.3s ease;
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tutorial-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: card-slide-in 0.4s ease;
+}
+
+@keyframes card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 不同步骤的边框颜色 */
+.tutorial-card.intro {
+  border-top: 4px solid #2196f3;
+}
+
+.tutorial-card.first-select,
+.tutorial-card.continue-select {
+  border-top: 4px solid #4caf50;
+}
+
+.tutorial-card.first-complete {
+  border-top: 4px solid #9c27b0;
+}
+
+.tutorial-card.first-backtrack {
+  border-top: 4px solid #ff9800;
+}
+
+.tutorial-card.summary {
+  border-top: 4px solid #4caf50;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.tutorial-header {
+  margin-bottom: 16px;
+}
+
+.tutorial-title {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+  padding-right: 32px;
+}
+
+.tutorial-content {
+  margin-bottom: 20px;
+}
+
+.tutorial-message {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* 预测部分 */
+.prediction-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.prediction-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-button {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover {
+  border-color: #2196f3;
+  background: #f5f9ff;
+}
+
+.option-button.selected {
+  border-color: #4caf50;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* 预测反馈 */
+.prediction-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: #e8f5e9;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9;
+}
+
+.feedback-icon {
+  font-size: 18px;
+}
+
+.feedback-text {
+  font-size: 14px;
+  color: #2e7d32;
+}
+
+/* 操作按钮 */
+.tutorial-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.action-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button.primary {
+  background: #4caf50;
+  color: white;
+  border: none;
+}
+
+.action-button.primary:hover:not(:disabled) {
+  background: #43a047;
+}
+
+.action-button.primary:disabled {
+  background: #c8e6c9;
+  cursor: not-allowed;
+}
+
+.action-button.secondary {
+  background: #fff;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.action-button.secondary:hover {
+  background: #f5f5f5;
+}
+
+/* 进度指示 */
+.tutorial-progress {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: #4caf50;
+  transform: scale(1.3);
+}

@@ -1,0 +1,129 @@
+.control-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.control-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.play-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.play-btn:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.pause-btn {
+  background: #FF9800;
+  color: white;
+}
+
+.pause-btn:hover:not(:disabled) {
+  background: #f57c00;
+}
+
+.step-back-btn {
+  background: #9C27B0;
+  color: white;
+}
+
+.step-back-btn:hover:not(:disabled) {
+  background: #7B1FA2;
+}
+
+.step-btn {
+  background: #2196F3;
+  color: white;
+}
+
+.step-btn:hover:not(:disabled) {
+  background: #1976D2;
+}
+
+.reset-btn {
+  background: #f44336;
+  color: white;
+}
+
+.reset-btn:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid #ddd;
+}
+
+.speed-control label {
+  font-size: 12px;
+  color: #666;
+}
+
+.speed-control input[type="range"] {
+  width: 80px;
+}
+
+.speed-value {
+  font-size: 11px;
+  color: #666;
+  min-width: 40px;
+}
+
+/* 步骤进度指示 */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #ddd;
+}
+
+.step-text {
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.step-progress-bar {
+  width: 100px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.step-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}

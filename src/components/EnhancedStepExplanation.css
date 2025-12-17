@@ -1,0 +1,161 @@
+.enhanced-step-explanation {
+  background: #fff;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.enhanced-step-explanation.select {
+  border-left-color: #4caf50;
+  background: #f1f8e9;
+}
+
+.enhanced-step-explanation.backtrack {
+  border-left-color: #ff9800;
+  background: #fff8e1;
+}
+
+.enhanced-step-explanation.complete {
+  border-left-color: #9c27b0;
+  background: #f3e5f5;
+}
+
+/* 步骤头部 */
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.step-icon {
+  font-size: 18px;
+}
+
+.step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+.step-progress {
+  font-size: 11px;
+  color: #666;
+  background: rgba(0,0,0,0.05);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* 主要说明 */
+.step-main {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+/* 详细解释 */
+.step-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.detail-label {
+  color: #888;
+  white-space: nowrap;
+}
+
+.detail-text {
+  color: #555;
+  line-height: 1.4;
+}
+
+/* 可选数字 */
+.alternatives-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.alternatives-list {
+  display: flex;
+  gap: 4px;
+}
+
+.alternative-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #666;
+  font-size: 12px;
+}
+
+/* 暂停提示 */
+.paused-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: #e3f2fd;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #1565c0;
+}
+
+.hint-icon {
+  font-size: 12px;
+}
+
+/* 状态摘要 - 隐藏，因为已经有 StateDisplay */
+.state-summary {
+  display: none;
+}
+
+/* 动画效果 */
+.enhanced-step-explanation.select .step-icon {
+  animation: bounce-in 0.3s ease;
+}
+
+.enhanced-step-explanation.backtrack .step-icon {
+  animation: shake 0.3s ease;
+}
+
+.enhanced-step-explanation.complete .step-icon {
+  animation: celebrate 0.5s ease;
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}

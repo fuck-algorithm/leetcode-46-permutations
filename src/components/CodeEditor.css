@@ -1,0 +1,138 @@
+.code-editor {
+  background: #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #2d2d2d;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.file-icon {
+  font-size: 14px;
+}
+
+.file-name {
+  color: #cccccc;
+  font-size: 12px;
+}
+
+.editor-content {
+  padding: 8px 0;
+  overflow-x: hidden;
+}
+
+.code-line {
+  display: flex;
+  min-height: 20px;
+  transition: background-color 0.15s ease;
+}
+
+.code-line:hover {
+  background: #2a2d2e;
+}
+
+.code-line.highlighted {
+  background: rgba(86, 156, 214, 0.1);
+}
+
+.code-line.current {
+  background: rgba(255, 204, 0, 0.15);
+  border-left: 2px solid #ffcc00;
+}
+
+.code-line.current .line-number {
+  color: #ffcc00;
+}
+
+.gutter {
+  display: flex;
+  align-items: center;
+  min-width: 45px;
+  padding: 0 6px;
+  background: #1e1e1e;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.line-number {
+  color: #858585;
+  font-size: 12px;
+  min-width: 24px;
+  text-align: right;
+}
+
+.execution-arrow {
+  color: #ffcc00;
+  font-size: 10px;
+  margin-left: 4px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.line-content {
+  flex: 1;
+  padding-right: 12px;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Token 语法高亮 */
+.token-keyword {
+  color: #569cd6;
+  font-weight: 500;
+}
+
+.token-type {
+  color: #4ec9b0;
+}
+
+.token-string {
+  color: #ce9178;
+}
+
+.token-number {
+  color: #b5cea8;
+}
+
+.token-comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.token-variable {
+  color: #9cdcfe;
+}
+
+.token-method {
+  color: #dcdcaa;
+}
+
+.token-operator {
+  color: #d4d4d4;
+}
+
+.token-punctuation {
+  color: #d4d4d4;
+}
+
+.token-plain {
+  color: #d4d4d4;
+}

@@ -1,0 +1,191 @@
+.tree-visualization {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tree-visualization svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 连接线样式 */
+.link {
+  transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
+}
+
+/* 节点样式 */
+.node {
+  cursor: pointer;
+}
+
+.node.dimmed {
+  opacity: 0.3;
+}
+
+.node-circle {
+  transition: fill 0.3s ease, stroke 0.3s ease, opacity 0.3s ease, r 0.2s ease;
+}
+
+.node:hover .node-circle {
+  filter: brightness(1.1);
+}
+
+.node-text {
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.3s ease;
+}
+
+/* 当前节点脉冲动画 */
+.pulse-ring {
+  animation: pulse-animation 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    r: 18;
+    opacity: 0.8;
+  }
+  50% {
+    r: 28;
+    opacity: 0.3;
+  }
+  100% {
+    r: 18;
+    opacity: 0.8;
+  }
+}
+
+/* 当前节点样式 */
+.node.current .node-circle {
+  animation: node-glow 1s ease-in-out infinite;
+}
+
+@keyframes node-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(76, 175, 80, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(76, 175, 80, 0.9));
+  }
+}
+
+/* 标注样式 */
+.annotation-group {
+  pointer-events: none;
+}
+
+.annotation-bg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.annotation-bg.select {
+  animation: annotation-bounce 0.5s ease;
+}
+
+.annotation-bg.backtrack {
+  animation: annotation-shake 0.4s ease;
+}
+
+.annotation-bg.complete {
+  animation: annotation-celebrate 0.6s ease;
+}
+
+@keyframes annotation-bounce {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+}
+
+@keyframes annotation-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px);
+  }
+  40% {
+    transform: translateX(3px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes annotation-celebrate {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+.annotation-text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 提示框样式 */
+.tooltip-group {
+  pointer-events: none;
+  animation: tooltip-fade-in 0.2s ease;
+}
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 完成节点特效 */
+.node-circle[data-state="complete"] {
+  animation: complete-sparkle 0.5s ease;
+}
+
+@keyframes complete-sparkle {
+  0% {
+    filter: brightness(1);
+  }
+  25% {
+    filter: brightness(1.5);
+  }
+  50% {
+    filter: brightness(1);
+  }
+  75% {
+    filter: brightness(1.3);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
