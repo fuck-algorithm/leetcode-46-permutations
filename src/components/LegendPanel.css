@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
-  overflow: hidden;
+  margin-bottom: 12px;
 }
 
 .legend-header {
@@ -38,6 +38,7 @@
 
 .legend-content {
   padding: 10px;
+  overflow: visible;
 }
 
 .legend-section {
@@ -60,7 +61,7 @@
 .legend-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px 12px;
 }
 
 .legend-item {
@@ -71,7 +72,8 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 11px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .legend-item:hover,
