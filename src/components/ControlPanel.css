@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
 }
 
 .controls {
@@ -105,6 +106,7 @@
   margin-left: 12px;
   padding-left: 12px;
   border-left: 1px solid #ddd;
+  flex: 1;
 }
 
 .step-text {
@@ -113,17 +115,62 @@
   white-space: nowrap;
 }
 
-.step-progress-bar {
-  width: 100px;
-  height: 4px;
-  background: #e0e0e0;
-  border-radius: 2px;
-  overflow: hidden;
+.step-slider {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
 }
 
-.step-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
-  border-radius: 2px;
-  transition: width 0.3s ease;
+.step-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.step-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.step-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.step-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.step-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.step-slider::-moz-range-track {
+  background: transparent;
+  border-radius: 3px;
+  height: 6px;
+}
+
+/* 快捷键提示样式 */
+.shortcut-hint {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-left: 2px;
 }

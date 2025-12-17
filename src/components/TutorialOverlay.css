@@ -61,6 +61,10 @@
   border-top: 4px solid #ff9800;
 }
 
+.tutorial-card.explore-branch {
+  border-top: 4px solid #2196f3;
+}
+
 .tutorial-card.summary {
   border-top: 4px solid #4caf50;
 }
@@ -107,8 +111,14 @@
   font-size: 15px;
   line-height: 1.7;
   color: #555;
-  margin: 0;
-  white-space: pre-line;
+}
+
+.tutorial-message p {
+  margin: 0 0 8px 0;
+}
+
+.tutorial-message p:last-child {
+  margin-bottom: 0;
 }
 
 /* 预测部分 */

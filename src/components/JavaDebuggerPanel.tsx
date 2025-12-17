@@ -37,7 +37,13 @@ export function JavaDebuggerPanel({
 
       {isExpanded && (
         <div className="debugger-content">
-          <CodeEditor currentStepType={currentStepType} />
+          <CodeEditor 
+            currentStepType={currentStepType}
+            currentPath={currentPath}
+            available={available}
+            inputNumbers={inputNumbers}
+            resultCount={resultCount}
+          />
           <MemoryPanel
             currentPath={currentPath}
             available={available}

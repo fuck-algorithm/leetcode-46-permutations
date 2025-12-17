@@ -11,6 +11,14 @@ interface MemoryPanelProps {
   previousAvailable?: number[];
 }
 
+// 调用栈帧接口
+interface StackFrame {
+  depth: number;
+  path: number[];
+  currentChoice: number | null;
+  availableChoices: number[];
+}
+
 interface VariableState {
   name: string;
   value: string;
@@ -113,19 +121,52 @@ export function MemoryPanel({
           ))}
         </div>
 
-        <div className="depth-section">
-          <div className="depth-header">
-            <span className="depth-label">递归深度</span>
-            <span className="depth-value">{depth}</span>
+        {/* 调用栈可视化 */}
+        <div className="call-stack-section">
+          <div className="stack-header">
+            <span className="stack-icon">📚</span>
+            <span className="stack-title">调用栈</span>
+            <span className="stack-depth">深度: {depth}</span>
           </div>
-          <div className="depth-indicator">
-            {Array.from({ length: Math.max(depth, 1) }).map((_, i) => (
-              <div
-                key={i}
-                className={`depth-bar ${i < depth ? 'active' : ''}`}
-                style={{ opacity: 0.3 + (i / Math.max(depth, 1)) * 0.7 }}
-              />
-            ))}
+          <div className="stack-frames">
+            {depth === 0 ? (
+              <div className="stack-empty">
+                <span className="empty-icon">⏳</span>
+                <span>等待开始...</span>
+              </div>
+            ) : (
+              <>
+                {/* 从栈底到栈顶显示 */}
+                {Array.from({ length: depth }).map((_, i) => {
+                  const frameDepth = i;
+                  const framePath = currentPath.slice(0, frameDepth + 1);
+                  const currentChoice = currentPath[frameDepth];
+                  const isTopFrame = frameDepth === depth - 1;
+                  
+                  return (
+                    <div 
+                      key={frameDepth} 
+                      className={`stack-frame ${isTopFrame ? 'active' : ''}`}
+                      style={{ marginLeft: `${frameDepth * 8}px` }}
+                    >
+                      <div className="frame-header">
+                        <span className="frame-icon">{isTopFrame ? '▶' : '│'}</span>
+                        <span className="frame-name">dfs(depth={frameDepth + 1})</span>
+                      </div>
+                      <div className="frame-content">
+                        <span className="frame-path">path=[{framePath.join(',')}]</span>
+                        <span className="frame-choice">选择: {currentChoice}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+                {/* 栈底标识 */}
+                <div className="stack-bottom">
+                  <span className="bottom-icon">═</span>
+                  <span className="bottom-label">permute()</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,0 +1,93 @@
+# Implementation Plan
+
+- [ ] 1. Implement Used Array tracking and visualization
+  - [ ] 1.1 Create UsedArrayTracker utility
+    - Create `src/engine/usedArrayTracker.ts`
+    - Implement `getUsedArray(inputNumbers, currentPath)` function
+    - Implement `getChangedIndex(prevPath, currentPath, inputNumbers)` function
+    - _Requirements: 1.1, 1.2, 1.3_
+  - [ ] 1.2 Write property test for Used Array consistency
+    - **Property 1: Used Array Consistency**
+    - **Validates: Requirements 1.1, 1.2, 1.3**
+  - [ ] 1.3 Create UsedArrayPanel component
+    - Create `src/components/UsedArrayPanel.tsx` and CSS
+    - Display each number with its used status (true/false)
+    - Add animation for status changes
+    - Use green for used (true), gray for unused (false)
+    - _Requirements: 1.1, 1.4_
+
+- [ ] 2. Implement Recursion Stack visualization
+  - [ ] 2.1 Create StackFrameBuilder utility
+    - Create `src/engine/stackFrameBuilder.ts`
+    - Implement `buildStack(currentPath, available, inputNumbers)` function
+    - Return array of StackFrame objects with depth, path, available, currentChoice
+    - _Requirements: 2.1, 2.4_
+  - [ ] 2.2 Write property tests for Recursion Stack
+    - **Property 2: Stack Depth Equals Path Length**
+    - **Property 3: Stack Frame Path Consistency**
+    - **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
+  - [ ] 2.3 Create RecursionStackPanel component
+    - Create `src/components/RecursionStackPanel.tsx` and CSS
+    - Display stack frames as vertical list (bottom = depth 0)
+    - Show depth level, path state, and current choice for each frame
+    - Animate push/pop operations
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+
+- [ ] 3. Implement Phase Indicator
+  - [ ] 3.1 Create phase determination utility
+    - Create `src/engine/phaseTracker.ts`
+    - Implement `getPhase(stepType, currentPath, prevPath)` function
+    - Return phase type and target number
+    - _Requirements: 3.1, 3.3_
+  - [ ] 3.2 Write property test for Phase Indicator
+    - **Property 4: Phase Indicator Correctness**
+    - **Validates: Requirements 3.1, 3.3**
+  - [ ] 3.3 Create PhaseIndicator component
+    - Create `src/components/PhaseIndicator.tsx` and CSS
+    - Display current phase with icon and description
+    - Use distinct colors: green (选择), blue (探索), orange (撤销), purple (完成)
+    - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [ ] 4. Implement Pseudocode Panel with sync highlighting
+  - [ ] 4.1 Create PseudocodeMapper utility
+    - Create `src/engine/pseudocodeMapper.ts`
+    - Define BACKTRACK_PSEUDOCODE constant with line definitions
+    - Implement `getHighlightedLine(stepType)` function
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [ ] 4.2 Write property test for Pseudocode mapping
+    - **Property 5: Pseudocode Line Mapping**
+    - **Validates: Requirements 4.2, 4.3, 4.4, 4.5**
+  - [ ] 4.3 Create PseudocodePanel component
+    - Create `src/components/PseudocodePanel.tsx` and CSS
+    - Display pseudocode with syntax highlighting
+    - Highlight current execution line based on step type
+    - Add smooth transition for line highlight changes
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+
+- [ ] 5. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 6. Integrate new components into App
+  - [ ] 6.1 Update App state management
+    - Add usedArrayState, recursionStackState, phaseState, pseudocodeState to App
+    - Update handleStepChange to compute new states
+    - _Requirements: 1.1, 2.1, 3.1, 4.1_
+  - [ ] 6.2 Add new panels to layout
+    - Integrate UsedArrayPanel into left panel or state bar
+    - Integrate RecursionStackPanel into right panel
+    - Integrate PhaseIndicator into step explanation area
+    - Replace or enhance JavaDebuggerPanel with PseudocodePanel
+    - _Requirements: 1.1, 2.1, 3.1, 4.1_
+  - [ ] 6.3 Add responsive styling
+    - Ensure new panels work on 768px - 1920px screens
+    - Add smooth transitions for state changes
+    - _Requirements: 1.4, 3.4_
+
+- [ ] 7. Implement pruning indicators (optional enhancement)
+  - [ ] 7.1 Add pruning tooltip to tree nodes
+    - Enhance TreeVisualization to show tooltip on hover for unexplored nodes
+    - Explain why branch was pruned (number already used)
+    - _Requirements: 5.2, 5.3_
+
+- [ ] 8. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

@@ -23,6 +23,17 @@ interface TutorialPrompt {
   showPrediction?: boolean;
 }
 
+// 教程步骤顺序
+const TUTORIAL_STEP_ORDER: TutorialStep[] = [
+  'intro',
+  'first-select',
+  'continue-select', 
+  'first-complete',
+  'first-backtrack',
+  'explore-branch',
+  'summary',
+];
+
 const TUTORIAL_PROMPTS: Record<TutorialStep, TutorialPrompt> = {
   'intro': {
     title: '🎓 欢迎来到回溯算法教程',
@@ -30,31 +41,27 @@ const TUTORIAL_PROMPTS: Record<TutorialStep, TutorialPrompt> = {
   },
   'first-select': {
     title: '📥 第一次选择',
-    message: '算法开始执行！现在需要选择第一个数字放入路径。你认为算法会选择哪个数字？',
-    showPrediction: true,
-    options: ['选择第一个可用数字', '随机选择', '选择最大的数字'],
+    message: '算法开始执行！现在需要选择第一个数字放入路径。回溯算法会按顺序尝试每个可用的数字。\n\n观察左侧代码：for 循环会遍历所有可用数字，第一次会选择列表中的第一个。',
   },
   'continue-select': {
-    title: '📥 继续选择',
-    message: '很好！算法继续选择下一个数字。注意观察：每次选择后，可选数字会减少一个。',
+    title: '📥 继续深入',
+    message: '很好！算法继续选择下一个数字。\n\n注意观察：\n• 当前路径（path）增加了一个数字\n• 可选数字（available）减少了一个\n\n这就是递归深入的过程！',
   },
   'first-complete': {
     title: '✅ 找到第一个排列！',
-    message: '恭喜！算法找到了第一个完整的排列。当所有数字都被使用时，就形成了一个有效的排列。接下来算法会做什么？',
-    showPrediction: true,
-    options: ['记录结果并回溯', '结束算法', '重新开始'],
+    message: '恭喜！当路径长度等于输入数组长度时，说明所有数字都已使用，形成了一个完整的排列。\n\n算法会：\n1. 将当前路径记录到结果中\n2. 然后开始回溯，寻找其他排列',
   },
   'first-backtrack': {
-    title: '↩️ 第一次回溯',
-    message: '这就是"回溯"！算法撤销上一步选择，尝试其他可能性。这是回溯算法的核心思想。',
+    title: '↩️ 回溯的奥秘',
+    message: '这就是"回溯"的核心！\n\n算法撤销了上一步的选择：\n• 从路径中移除最后一个数字\n• 将该数字放回可选列表\n\n这样就可以尝试其他的选择了。回溯让算法能够系统地探索所有可能性！',
   },
   'explore-branch': {
     title: '🔍 探索新分支',
-    message: '算法现在正在探索另一个分支。通过系统地尝试所有可能的选择，算法能够找到所有的排列组合。',
+    message: '算法现在正在探索另一个分支。\n\n通过不断地：\n• 选择 → 深入\n• 完成 → 记录\n• 回溯 → 尝试其他\n\n算法最终会找到所有可能的排列组合！',
   },
   'summary': {
     title: '🎉 教程完成！',
-    message: '你已经了解了回溯算法的基本原理：\n\n1. 选择：从可用选项中选择一个\n2. 探索：递归地继续选择\n3. 回溯：撤销选择，尝试其他可能\n\n这种"尝试-回退"的策略让算法能够系统地探索所有可能性。',
+    message: '你已经掌握了回溯算法的核心思想：\n\n🔹 选择：从可用选项中选择一个加入路径\n🔹 探索：递归地继续选择，直到形成完整排列\n🔹 回溯：撤销选择，尝试其他可能性\n\n这种"尝试-回退"的策略是解决排列、组合、子集等问题的通用方法！',
   },
 };
 
@@ -106,7 +113,34 @@ export function useTutorialController(
   }, []);
 
   const continueTutorial = useCallback(() => {
-    setCompletedSteps((prev) => new Set([...prev, tutorialState.currentStep]));
+    const currentStep = tutorialState.currentStep;
+    setCompletedSteps((prev) => new Set([...prev, currentStep]));
+    
+    // 如果是 intro，直接进入 first-select 并恢复播放
+    if (currentStep === 'intro') {
+      setTutorialState((prev) => ({
+        ...prev,
+        currentStep: 'first-select',
+        userPrediction: null,
+        isWaitingForPrediction: false,
+      }));
+      onResume?.();
+      return;
+    }
+    
+    // 如果是 summary，退出教程
+    if (currentStep === 'summary') {
+      setTutorialState({
+        isActive: false,
+        currentStep: 'intro',
+        userPrediction: null,
+        isWaitingForPrediction: false,
+      });
+      onResume?.();
+      return;
+    }
+    
+    // 其他步骤，清除状态并恢复播放，等待下一个决策点
     setTutorialState((prev) => ({
       ...prev,
       userPrediction: null,
@@ -118,6 +152,32 @@ export function useTutorialController(
   const checkDecisionPoint = useCallback(
     (stepType: StepType, stepIndex: number): boolean => {
       if (!tutorialState.isActive) return false;
+      
+      // 如果当前在 intro 步骤，不检查决策点
+      if (tutorialState.currentStep === 'intro') return false;
+
+      // 检查第一次选择 (stepIndex === 0)
+      if (stepIndex === 0 && stepType === 'select' && !completedSteps.has('first-select')) {
+        setTutorialState((prev) => ({
+          ...prev,
+          currentStep: 'first-select',
+          isWaitingForPrediction: false,
+        }));
+        onPause?.();
+        return true;
+      }
+
+      // 检查继续选择 (第2或第3步的选择)
+      if ((stepIndex === 1 || stepIndex === 2) && stepType === 'select' && 
+          completedSteps.has('first-select') && !completedSteps.has('continue-select')) {
+        setTutorialState((prev) => ({
+          ...prev,
+          currentStep: 'continue-select',
+          isWaitingForPrediction: false,
+        }));
+        onPause?.();
+        return true;
+      }
 
       // 检查是否是第一次完成
       if (stepType === 'complete' && !firstCompleteFound && !completedSteps.has('first-complete')) {
@@ -125,7 +185,7 @@ export function useTutorialController(
         setTutorialState((prev) => ({
           ...prev,
           currentStep: 'first-complete',
-          isWaitingForPrediction: true,
+          isWaitingForPrediction: false,
         }));
         onPause?.();
         return true;
@@ -143,22 +203,22 @@ export function useTutorialController(
         return true;
       }
 
-      // 检查第一次选择
-      if (stepIndex === 0 && stepType === 'select' && !completedSteps.has('first-select')) {
+      // 检查探索新分支 (回溯后的第一次选择)
+      if (stepType === 'select' && firstBacktrackFound && !completedSteps.has('explore-branch')) {
         setTutorialState((prev) => ({
           ...prev,
-          currentStep: 'first-select',
-          isWaitingForPrediction: true,
+          currentStep: 'explore-branch',
+          isWaitingForPrediction: false,
         }));
         onPause?.();
         return true;
       }
 
-      // 检查继续选择
-      if (stepIndex === 2 && stepType === 'select' && !completedSteps.has('continue-select')) {
+      // 如果已经完成了所有关键步骤，显示总结
+      if (completedSteps.has('explore-branch') && !completedSteps.has('summary')) {
         setTutorialState((prev) => ({
           ...prev,
-          currentStep: 'continue-select',
+          currentStep: 'summary',
           isWaitingForPrediction: false,
         }));
         onPause?.();
@@ -167,7 +227,7 @@ export function useTutorialController(
 
       return false;
     },
-    [tutorialState.isActive, firstCompleteFound, firstBacktrackFound, completedSteps, onPause]
+    [tutorialState.isActive, tutorialState.currentStep, firstCompleteFound, firstBacktrackFound, completedSteps, onPause]
   );
 
   const getTutorialPrompt = useCallback((): TutorialPrompt | null => {

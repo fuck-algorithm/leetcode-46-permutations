@@ -57,7 +57,11 @@ export function TutorialOverlay({
 
         {/* 内容 */}
         <div className="tutorial-content">
-          <p className="tutorial-message">{prompt.message}</p>
+          <div className="tutorial-message">
+            {prompt.message.split('\n').map((line, index) => (
+              <p key={index}>{line || <br />}</p>
+            ))}
+          </div>
 
           {/* 选项按钮 */}
           {prompt.options && needsPrediction && (
@@ -121,7 +125,7 @@ export function TutorialOverlay({
         {/* 进度指示 */}
         <div className="tutorial-progress">
           <div className="progress-dots">
-            {['intro', 'first-select', 'continue-select', 'first-complete', 'first-backtrack', 'summary'].map(
+            {['intro', 'first-select', 'continue-select', 'first-complete', 'first-backtrack', 'explore-branch', 'summary'].map(
               (step) => (
                 <span
                   key={step}
