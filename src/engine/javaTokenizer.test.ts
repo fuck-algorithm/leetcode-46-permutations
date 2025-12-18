@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { tokenizeLine, formatJavaArray, parseJavaCode, getJavaPermutationCode, getCurrentExecutionLine } from './javaTokenizer';
-import { JAVA_KEYWORDS, JAVA_TYPES } from '../types';
+import { JAVA_SYNTAX } from './codeTemplates';
+
+// 使用新的语法定义
+const JAVA_KEYWORDS = JAVA_SYNTAX.keywords;
+const JAVA_TYPES = JAVA_SYNTAX.types;
 
 describe('javaTokenizer', () => {
   /**
@@ -138,18 +142,18 @@ describe('javaTokenizer', () => {
 
   describe('getCurrentExecutionLine', () => {
     it('should return correct line for select step', () => {
-      // path.addLast(nums[i]) is on line 18
-      expect(getCurrentExecutionLine('select')).toBe(18);
+      // path.addLast(nums[i]) is on line 20
+      expect(getCurrentExecutionLine('select')).toBe(20);
     });
 
     it('should return correct line for backtrack step', () => {
-      // path.removeLast() is on line 21
-      expect(getCurrentExecutionLine('backtrack')).toBe(21);
+      // path.removeLast() is on line 23
+      expect(getCurrentExecutionLine('backtrack')).toBe(23);
     });
 
     it('should return correct line for complete step', () => {
-      // res.add(new ArrayList<>(path)) is on line 14
-      expect(getCurrentExecutionLine('complete')).toBe(14);
+      // res.add(new ArrayList<>(path)) is on line 15
+      expect(getCurrentExecutionLine('complete')).toBe(15);
     });
 
     it('should return null for null step', () => {

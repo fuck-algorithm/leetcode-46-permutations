@@ -10,10 +10,16 @@
 .editor-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   padding: 8px 12px;
   background: #2d2d2d;
   border-bottom: 1px solid #3c3c3c;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .file-icon {
@@ -23,6 +29,44 @@
 .file-name {
   color: #cccccc;
   font-size: 12px;
+}
+
+.language-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #3c3c3c;
+  border: 1px solid #4c4c4c;
+  border-radius: 4px;
+  color: #aaa;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lang-btn:hover {
+  background: #4c4c4c;
+  color: #fff;
+}
+
+.lang-btn.active {
+  background: #0e639c;
+  border-color: #1177bb;
+  color: #fff;
+}
+
+.lang-icon {
+  font-size: 12px;
+}
+
+.lang-name {
+  font-size: 11px;
 }
 
 .editor-content {

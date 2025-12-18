@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
-import { StepType, JAVA_LINE_MAPPING } from '../types';
-import { getJavaPermutationCode, getCurrentExecutionLine } from '../engine/javaTokenizer';
+import { StepType } from '../types';
+import { ProgrammingLanguage, LANGUAGE_CONFIGS, getLanguageConfig } from '../types/languages';
+import { 
+  getCodeLines, 
+  getHighlightedLines, 
+  getCurrentExecutionLine,
+  getLineVariableMapping 
+} from '../engine/multiLangTokenizer';
 import './CodeEditor.css';
 
 interface CodeEditorProps {
@@ -9,21 +15,9 @@ interface CodeEditorProps {
   available?: number[];
   inputNumbers?: number[];
   resultCount?: number;
+  language: ProgrammingLanguage;
+  onLanguageChange: (lang: ProgrammingLanguage) => void;
 }
-
-// 定义哪些行需要显示哪些变量的值
-const LINE_VARIABLE_MAPPING: Record<number, string[]> = {
-  3: ['res'],           // List<List<Integer>> res = new ArrayList<>();
-  4: ['len'],           // int len = nums.length;
-  5: ['used'],          // boolean[] used = new boolean[len];
-  6: ['path'],          // Deque<Integer> path = new ArrayDeque<>();
-  11: ['depth'],        // void dfs(..., int depth, ...)
-  14: ['depth', 'len'], // if (depth == len)
-  18: ['i', 'len'],     // for (int i = 0; i < len; i++)
-  19: ['used[i]'],      // if (used[i]) continue;
-  20: ['nums[i]'],      // path.addLast(nums[i]);
-  21: ['used[i]'],      // used[i] = true;
-};
 
 export function CodeEditor({ 
   currentStepType, 
@@ -31,24 +25,26 @@ export function CodeEditor({
   available = [],
   inputNumbers = [],
   resultCount = 0,
+  language,
+  onLanguageChange,
 }: CodeEditorProps) {
-  const codeLines = useMemo(() => getJavaPermutationCode(), []);
+  const codeLines = useMemo(() => getCodeLines(language), [language]);
+  const langConfig = useMemo(() => getLanguageConfig(language), [language]);
+  const lineVariableMapping = useMemo(() => getLineVariableMapping(language), [language]);
   
   const highlightedLines = useMemo(() => {
-    if (!currentStepType) return [];
-    return JAVA_LINE_MAPPING[currentStepType] || [];
-  }, [currentStepType]);
+    return getHighlightedLines(language, currentStepType);
+  }, [language, currentStepType]);
 
   const currentExecutionLine = useMemo(() => {
-    return getCurrentExecutionLine(currentStepType);
-  }, [currentStepType]);
+    return getCurrentExecutionLine(language, currentStepType);
+  }, [language, currentStepType]);
 
   // 计算变量值
   const getVariableValue = useMemo(() => {
     const depth = currentPath.length;
     const len = inputNumbers.length;
     const used = inputNumbers.map(n => !available.includes(n));
-    // 当前正在处理的索引 (最后选择的数字在原数组中的位置)
     const currentI = currentPath.length > 0 
       ? inputNumbers.indexOf(currentPath[currentPath.length - 1])
       : 0;
@@ -58,6 +54,7 @@ export function CodeEditor({
         case 'res':
           return `size=${resultCount}`;
         case 'len':
+        case 'n':
           return `${len}`;
         case 'used':
           return `[${used.map(u => u ? 'T' : 'F').join(', ')}]`;
@@ -79,7 +76,7 @@ export function CodeEditor({
 
   // 获取某行的变量值显示
   const getLineVariableDisplay = (lineNumber: number): string | null => {
-    const variables = LINE_VARIABLE_MAPPING[lineNumber];
+    const variables = lineVariableMapping[lineNumber];
     if (!variables || inputNumbers.length === 0) return null;
 
     const values = variables
@@ -95,8 +92,23 @@ export function CodeEditor({
   return (
     <div className="code-editor">
       <div className="editor-header">
-        <span className="file-icon">☕</span>
-        <span className="file-name">Solution.java</span>
+        <div className="file-info">
+          <span className="file-icon">{langConfig.icon}</span>
+          <span className="file-name">{langConfig.fileName}</span>
+        </div>
+        <div className="language-selector">
+          {LANGUAGE_CONFIGS.map((config) => (
+            <button
+              key={config.id}
+              className={`lang-btn ${language === config.id ? 'active' : ''}`}
+              onClick={() => onLanguageChange(config.id)}
+              title={config.name}
+            >
+              <span className="lang-icon">{config.icon}</span>
+              <span className="lang-name">{config.name}</span>
+            </button>
+          ))}
+        </div>
       </div>
       <div className="editor-content">
         {codeLines.map((line) => {
@@ -120,7 +132,10 @@ export function CodeEditor({
                   </span>
                 ))}
                 {variableDisplay && (
-                  <span className="inline-variable-value">// {variableDisplay}</span>
+                  <span className="inline-variable-value">
+                    {language === 'python' ? ' # ' : ' // '}
+                    {variableDisplay}
+                  </span>
                 )}
               </div>
             </div>
@@ -134,14 +149,13 @@ export function CodeEditor({
 /**
  * 用于测试的辅助函数：获取高亮行号
  */
-export function getHighlightedLineNumbers(stepType: StepType | null): number[] {
-  if (!stepType) return [];
-  return JAVA_LINE_MAPPING[stepType] || [];
+export function getHighlightedLineNumbers(stepType: StepType | null, lang: ProgrammingLanguage = 'java'): number[] {
+  return getHighlightedLines(lang, stepType);
 }
 
 /**
  * 用于测试的辅助函数：获取代码行数
  */
-export function getCodeLineCount(): number {
-  return getJavaPermutationCode().length;
+export function getCodeLineCount(lang: ProgrammingLanguage = 'java'): number {
+  return getCodeLines(lang).length;
 }

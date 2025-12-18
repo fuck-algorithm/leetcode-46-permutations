@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { getHighlightedLineNumbers, getCodeLineCount } from './CodeEditor';
 import { getJavaPermutationCode } from '../engine/javaTokenizer';
-import { JAVA_LINE_MAPPING, StepType } from '../types';
+import { StepType } from '../types';
+import { JAVA_LINE_MAPPING } from '../engine/codeTemplates';
+import { ProgrammingLanguage } from '../types/languages';
 
 describe('CodeEditor', () => {
   /**
@@ -103,6 +105,36 @@ describe('CodeEditor', () => {
         highlightedLines.forEach(lineNum => {
           expect(lineNum).toBeGreaterThanOrEqual(1);
           expect(lineNum).toBeLessThanOrEqual(totalLines);
+        });
+      });
+    });
+  });
+
+  /**
+   * Property: Multi-language Support
+   * Each supported language should have valid code and line mappings.
+   */
+  describe('Multi-language Support', () => {
+    const languages: ProgrammingLanguage[] = ['java', 'python', 'golang', 'javascript'];
+    const stepTypes: StepType[] = ['select', 'backtrack', 'complete'];
+
+    it('should have code for all supported languages', () => {
+      languages.forEach(lang => {
+        const lineCount = getCodeLineCount(lang);
+        expect(lineCount).toBeGreaterThan(0);
+      });
+    });
+
+    it('should have valid line mappings for all languages', () => {
+      languages.forEach(lang => {
+        const totalLines = getCodeLineCount(lang);
+        stepTypes.forEach(stepType => {
+          const highlightedLines = getHighlightedLineNumbers(stepType, lang);
+          expect(highlightedLines.length).toBeGreaterThan(0);
+          highlightedLines.forEach(lineNum => {
+            expect(lineNum).toBeGreaterThanOrEqual(1);
+            expect(lineNum).toBeLessThanOrEqual(totalLines);
+          });
         });
       });
     });

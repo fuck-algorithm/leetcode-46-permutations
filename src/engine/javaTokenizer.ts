@@ -1,5 +1,9 @@
-import { CodeToken, JavaCodeLine, JAVA_KEYWORDS, JAVA_TYPES, JAVA_PERMUTATION_CODE, StepType } from '../types';
+import { CodeToken, JavaCodeLine, StepType } from '../types';
 import type { TokenType } from '../types';
+import { JAVA_CODE, JAVA_SYNTAX, JAVA_EXECUTION_LINES } from './codeTemplates';
+
+// 重新导出以保持向后兼容
+export { JAVA_CODE as JAVA_PERMUTATION_CODE } from './codeTemplates';
 
 /**
  * 将 Java 代码行分词为 Token 数组
@@ -67,9 +71,9 @@ export function tokenizeLine(line: string): CodeToken[] {
       }
 
       let type: TokenType = 'variable';
-      if (JAVA_KEYWORDS.includes(ident)) {
+      if (JAVA_SYNTAX.keywords.includes(ident)) {
         type = 'keyword';
-      } else if (JAVA_TYPES.includes(ident)) {
+      } else if (JAVA_SYNTAX.types.includes(ident)) {
         type = 'type';
       } else if (i < line.length && line[i] === '(') {
         type = 'method';
@@ -139,7 +143,7 @@ export function parseJavaCode(code: string): JavaCodeLine[] {
  * 获取预解析的 Java 全排列代码
  */
 export function getJavaPermutationCode(): JavaCodeLine[] {
-  return parseJavaCode(JAVA_PERMUTATION_CODE);
+  return parseJavaCode(JAVA_CODE);
 }
 
 /**
@@ -147,12 +151,5 @@ export function getJavaPermutationCode(): JavaCodeLine[] {
  */
 export function getCurrentExecutionLine(stepType: StepType | null): number | null {
   if (!stepType) return null;
-  
-  const lineMap: Record<string, number> = {
-    select: 18,      // path.addLast(nums[i])
-    backtrack: 21,   // path.removeLast()
-    complete: 14,    // res.add(new ArrayList<>(path))
-  };
-  
-  return lineMap[stepType] ?? null;
+  return JAVA_EXECUTION_LINES[stepType] ?? null;
 }

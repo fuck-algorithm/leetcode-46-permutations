@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StepType } from '../types';
+import { ProgrammingLanguage } from '../types/languages';
 import { CodeEditor } from './CodeEditor';
 import { MemoryPanel } from './MemoryPanel';
 import './JavaDebuggerPanel.css';
@@ -26,6 +27,7 @@ export function JavaDebuggerPanel({
   isExpanded: initialExpanded = true,
 }: JavaDebuggerPanelProps) {
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
+  const [language, setLanguage] = useState<ProgrammingLanguage>('java');
 
   return (
     <div className={`java-debugger-panel ${isExpanded ? 'expanded' : 'collapsed'}`}>
@@ -43,6 +45,8 @@ export function JavaDebuggerPanel({
             available={available}
             inputNumbers={inputNumbers}
             resultCount={resultCount}
+            language={language}
+            onLanguageChange={setLanguage}
           />
           <MemoryPanel
             currentPath={currentPath}
